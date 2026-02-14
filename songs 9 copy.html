@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Little Universe ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Great+Vibes&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Playfair Display', serif;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(200,160,110,.15), transparent 60%),
+        linear-gradient(135deg,#1c140f,#0f0b09,#1a120e);
+    color:#f3e7d8;
+    text-align:center;
+    overflow:hidden;
+    position:relative;
+    transition: background 1.5s ease;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+@keyframes gradientShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ====== NEBULA ====== */
+
+.nebula, .nebula2{
+    position:fixed;
+    width:900px;
+    height:900px;
+    filter:blur(140px);
+    z-index:-4;
+    opacity:0.5;
+}
+
+.nebula{
+    background:radial-gradient(circle, rgba(255,90,200,0.3), transparent 60%);
+    top:-300px;
+    left:-200px;
+    animation: floatNebula 60s infinite alternate ease-in-out;
+}
+
+.nebula2{
+    background:radial-gradient(circle, rgba(80,120,255,0.3), transparent 60%);
+    bottom:-300px;
+    right:-200px;
+    animation: floatNebula 80s infinite alternate ease-in-out;
+}
+
+@keyframes floatNebula{
+    from{transform:translate(0,0);}
+    to{transform:translate(150px,80px);}
+}
+
+/* ====== MOON ====== */
+
+.moon{
+    position:fixed;
+    top:80px;
+    right:120px;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:radial-gradient(circle,#f7ecd9 40%,#d8c2a1 70%);
+    box-shadow:0 0 60px 25px rgba(230,190,140,0.4);
+    animation:none;
+    z-index:-1;
+}
+
+@keyframes moonGlow{
+    from{box-shadow:0 0 60px 25px rgba(255,255,255,0.3);}
+    to{box-shadow:0 0 120px 50px rgba(255,255,255,0.6);}
+}
+
+/* ====== STARS ====== */
+
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-3;
+}
+
+.star{
+    position:absolute;
+    background:rgba(255,230,190,.8);
+    border-radius:50%;
+    animation: twinkle 4s infinite alternate ease-in-out;
+}
+
+@keyframes twinkle{
+    from{opacity:0.2; transform:scale(1);}
+    to{opacity:1; transform:scale(1.6);}
+}
+
+/* ====== DUST PARTICLES ====== */
+
+.dust{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-2;
+}
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:rgba(255, 255, 255, 0.132);
+    border-radius:50%;
+    animation: drift 20s linear infinite;
+}
+
+@keyframes drift{
+    from{transform:translateY(0);}
+    to{transform:translateY(-120vh);}
+}
+
+/* ====== SHOOTING STAR ====== */
+
+@keyframes shoot{
+    0%{transform:translate(0,0) rotate(45deg);opacity:1;}
+    100%{transform:translate(-100vw,100vh) rotate(45deg);opacity:0;}
+}
+
+/* ====== UI ====== */
+
+h1{
+    margin-top:90px;
+    font-family:'Cinzel', serif;
+    font-size:56px;
+    letter-spacing:4px;
+    font-weight:600;
+    color:#f3d7c6;
+    text-shadow:
+        0 0 10px rgba(255,180,150,0.3),
+        0 0 30px rgba(150,80,60,0.2);
+}
+
+.sub{
+    opacity:0.8;
+}
+
+.grid{
+    margin-top:60px;
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    flex-wrap:wrap;
+}
+
+.album{
+    width:230px;
+    background:#efe3cf;
+    padding:15px 15px 35px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.4s;
+    position:relative;
+    box-shadow:
+        0 20px 30px rgba(0,0,0,0.4),
+        inset 0 0 10px rgba(0,0,0,0.15);
+}
+
+.album:hover{
+    transform:translateY(-12px) scale(1.05);
+}
+
+.album img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:4px;
+    filter:sepia(.35) contrast(.95);
+}
+
+.play-circle{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#ffb07b,#895537);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    opacity:0;
+    transition:0.4s;
+}
+
+.album:hover .play-circle{
+    opacity:1;
+}
+
+.playing{
+    box-shadow:0 0 40px rgba(162, 125, 84, 0.9);
+}
+
+button{
+    margin:20px;
+    background:none;
+    border:1px solid rgba(255,255,255,0.4);
+    color:white;
+    padding:12px 25px;
+    border-radius:40px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:rgba(255, 255, 255, 0.062);
+}
+
+.message{
+    margin-top:50px;
+    opacity:0.7;
+}
+/* ====== ENDING SEQUENCE ====== */
+
+/* ====== NEW ENDING SEQUENCE ====== */
+
+.ending-overlay{
+    position:fixed;
+    inset:0;
+
+    background:
+        radial-gradient(circle at 40% 60%,
+            rgba(120,20,40,0.25),
+            transparent 60%),
+        linear-gradient(140deg,
+            #1a0409 0%,
+            #3a0816 40%,
+            #15020a 70%,
+            #0a0104 100%);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+
+    opacity:0;
+    pointer-events:none;
+    transition:1.8s ease;
+    z-index:5000;
+    overflow:hidden;
+}
+
+.ending-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* soft sunset glow */
+
+.sunset-glow{
+    position:absolute;
+    inset:-20%;
+    background:radial-gradient(circle at 40% 60%,
+        rgba(150,30,70,0.35),
+        rgba(90,10,40,0.2),
+        transparent 65%);
+    animation:sunsetFade 8s ease forwards;
+}
+
+@keyframes sunsetFade{
+    from{opacity:1;}
+    to{opacity:0.2;}
+}
+
+/* sparkles */
+
+.sparkle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    opacity:.7;
+    animation:floatUp 7s linear infinite;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0); opacity:0.9;}
+    to{transform:translateY(-120vh); opacity:0;}
+}
+
+/* main text style */
+
+.ending-text{
+    font-family:'Great Vibes', cursive;
+    font-size:70px;
+    opacity:0;
+    transform:translateY(25px) scale(0.98);
+    transition:1.2s ease;
+    text-align:center;
+    color:#ffd9ec;
+    text-shadow:
+        0 0 15px rgba(180,60,120,0.5),
+        0 0 40px rgba(120,30,80,0.35);
+}
+
+.ending-text.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+.small-text{
+    font-family:'Playfair Display', serif;
+    font-size:32px;
+    letter-spacing:1px;
+    color:#ffe9f3;
+}
+
+/* INTRO OVERLAY */
+.intro-overlay{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:6000;
+
+    background:linear-gradient(
+        160deg,
+        #0f0709 0%,
+        #16090d 40%,
+        #12060a 70%,
+        #0a0406 100%
+    );
+}
+.intro-overlay::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+}
+
+.intro-text{
+    font-family:'Playfair Display', serif;
+    font-size:58px;
+    line-height:1.15;
+    letter-spacing:1px;
+    color:#f5d8c7;
+
+    opacity:0;
+    filter:blur(8px);
+    transform:scale(0.96);
+    transition:all 1.8s cubic-bezier(.22,1,.36,1);
+
+    text-shadow:
+        0 0 10px rgba(255,200,170,0.4),
+        0 0 30px rgba(180,120,100,0.3);
+}
+.intro-text.show{
+    opacity:1;
+    filter:blur(0);
+    transform:scale(1);
+}
+
+/* vignette vintage */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle, transparent 55%, rgba(0,0,0,.65) 120%);
+    pointer-events:none;
+    z-index:50;
+}
+
+.film-grain{
+    position:fixed;
+    inset:0;
+    background:url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+    opacity:.12;
+    mix-blend-mode:overlay;
+    pointer-events:none;
+    z-index:40;
+}
+
+.intro-overlay::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+    opacity:0.15;
+    mix-blend-mode:overlay;
+}
+
+.cinematic-fade{
+    animation: cinemaFade 1.6s ease forwards;
+}
+
+@keyframes cinemaFade{
+    0%{
+        opacity:1;
+        filter:blur(0px) brightness(1);
+    }
+    100%{
+        opacity:0;
+        filter:blur(12px) brightness(.4);
+    }
+}
+
+.film-burn{
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at 10% 90%,
+    rgba(255,140,100,0.6),
+    transparent 40%);
+    mix-blend-mode:screen;
+    opacity:0;
+    animation:burn 3s ease forwards;
+}
+
+@keyframes burn{
+    0%{opacity:0;}
+    30%{opacity:0.4;}
+    100%{opacity:0;}
+}
+
+#vintageOverlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle at center, #7a0f1d, #3b0008);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.8s ease;
+  z-index:9999;
+}
+
+#vintageOverlay.active{
+  opacity:1;
+}
+
+
+.light-rays{
+    position:absolute;
+    inset:-20%;
+    background:
+        repeating-linear-gradient(
+            120deg,
+            rgba(255,255,255,0.04) 0px,
+            rgba(255,255,255,0.04) 2px,
+            transparent 3px,
+            transparent 12px
+        );
+    mix-blend-mode:overlay;
+    opacity:0.4;
+    animation:raysMove 30s linear infinite;
+}
+
+@keyframes raysMove{
+    from{transform:translateX(0);}
+    to{transform:translateX(200px);}
+}
+
+
+.film-flicker{
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,0.02);
+    animation:flicker 4s infinite;
+    pointer-events:none;
+}
+
+@keyframes flicker{
+    0%{opacity:0.05;}
+    5%{opacity:0.15;}
+    10%{opacity:0.05;}
+    100%{opacity:0.08;}
+}
+
+.ending-overlay::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,
+        transparent 50%,
+        rgba(0,0,0,0.75) 110%);
+    pointer-events:none;
+}
+
+@keyframes textPulse{
+    0%{text-shadow:0 0 15px rgba(180,60,120,0.5);}
+    50%{text-shadow:0 0 30px rgba(220,80,160,0.6);}
+    100%{text-shadow:0 0 15px rgba(180,60,120,0.5);}
+}
+
+.ending-text.show{
+    animation:textPulse 4s ease-in-out infinite;
+}
+
+.moon{
+    animation: moonBreath 6s ease-in-out infinite alternate;
+}
+
+@keyframes moonBreath{
+    from{ box-shadow:0 0 60px 25px rgba(230,190,140,0.3); }
+    to{ box-shadow:0 0 120px 45px rgba(255,220,180,0.6); }
+}
+
+.quote{
+    margin-top:15px;
+    font-family:'Great Vibes', cursive;
+    font-size:28px;
+    letter-spacing:2px;
+
+    opacity:0;
+    transform:translateY(20px);
+    filter:blur(6px);
+    transition: all 1.6s cubic-bezier(.22,1,.36,1);
+
+    text-shadow:0 0 15px rgba(255,200,180,.25);
+}
+
+.quote.show{
+    opacity:.85;
+    transform:translateY(0);
+    filter:blur(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="nebula" id="nebula1"></div>
+<div class="nebula2" id="nebula2"></div>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
+<div class="moon"></div>
+
+<!-- Intro overlay (shows before main UI) -->
+<div class="intro-overlay" id="introOverlay">
+    <div class="intro-text" id="introText"></div>
+</div>
+
+<h1 style="opacity:0;pointer-events:none;transition:.6s">SONGS REMIND ME OF YOU </h1>
+<div class="quote" id="quote">
+    Every melody leads me back to you.
+</div>
+
+<div class="sub" style="opacity:0;pointer-events:none">Click on an album to play/pause 🎵</div>
+<div class="grid" id="grid" style="opacity:0;pointer-events:none"></div>
+
+<div class="controls" style="opacity:0;pointer-events:none">
+    <button onclick="prevSong()">⏮ Previous</button>
+    <button onclick="nextSong()">Next ⏭</button>
+</div>
+
+<button onclick="goToNextPage()" style="margin-top:30px;opacity:0;pointer-events:none">
+                🤍
+            </button>
+
+<audio id="audio"></audio>
+
+<script>
+/* Stars */
+const stars = document.getElementById("stars");
+for(let i=0;i<120;i++){
+    const star = document.createElement("div");
+    star.className="star";
+    let size=Math.random()*3+1;
+    star.style.width=size+"px";
+    star.style.height=size+"px";
+    star.style.top=Math.random()*100+"%";
+    star.style.left=Math.random()*100+"%";
+    star.style.animationDuration=(Math.random()*3+2)+"s";
+    stars.appendChild(star);
+}
+
+/* Dust */
+const dust=document.getElementById("dust");
+for(let i=0;i<40;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"%";
+    p.style.top=Math.random()*100+"vh";
+    p.style.animationDuration=(Math.random()*20+10)+"s";
+    dust.appendChild(p);
+}
+
+/* Shooting Star */
+function shootingStar(){
+    const star=document.createElement("div");
+    star.style.position="fixed";
+    star.style.width="200px";
+    star.style.height="2px";
+    star.style.background="linear-gradient(90deg,#fff,transparent)";
+    star.style.top=Math.random()*40+"%";
+    star.style.right="-200px";
+    star.style.animation="shoot 2s linear forwards";
+    document.body.appendChild(star);
+    setTimeout(()=>star.remove(),2000);
+}
+setInterval(shootingStar,7000);
+
+/* Intro sequence: show a few lines, then reveal main UI */
+(function(){
+    const introLines = [
+        "Not only that,",
+        "something that reminds me of you is…",
+        "..."
+    ];
+    const introTextEl = document.getElementById('introText');
+    const introOverlay = document.getElementById('introOverlay');
+    let idx = 0;
+
+    function showNext(){
+        if(idx < introLines.length){
+            introTextEl.classList.remove('show');
+            setTimeout(()=>{
+                introTextEl.textContent = introLines[idx];
+                introTextEl.classList.add('show');
+                idx++;
+            }, 400);
+        } else {
+            // hide overlay and reveal main UI (give a small pause)
+            setTimeout(()=>{
+                introOverlay.style.opacity = "0";
+
+                setTimeout(()=>{
+                  introOverlay.style.pointerEvents="none";
+                  revealMain();
+                },1600);
+
+                setTimeout(()=>{
+                    introOverlay.remove();
+                },2500);
+                 clearInterval(timer);
+             }, 1000);
+         }
+    }
+    function revealMain(){
+
+    document.querySelectorAll('h1, .sub, .grid, .controls, button[onclick="goToNextPage()"]').forEach(el=>{
+        el.style.transition='0.8s';
+        el.style.opacity=1;
+        el.style.pointerEvents='auto';
+    });
+
+    // ✨ làm quote hiện trễ hơn một chút
+    setTimeout(()=>{
+        document.getElementById("quote").classList.add("show");
+    }, 800);
+}
+
+    // start first line shortly after load (slower)
+    setTimeout(()=>{
+        introTextEl.textContent = introLines[0];
+        introTextEl.classList.add('show');
+        idx = 1;
+    }, 600);
+
+    const timer = setInterval(showNext, 3800);
+
+} )();
+
+/* Music */
+const songs=[
+    {title:"My Love Mine All Mine - Mitski",file:"My Love Mine All Mine.mp3",cover:"mylove.png"},
+    {title:"Lover - Taylor Swift",file:"Lover.mp3",cover:"lover.png"},
+    {title:"l-o-v-e - Rocco",file:"l-o-v-e.mp3",cover:"l-o-v-e.png"}
+];
+
+// ===== Theme màu cho từng bài =====
+const themes = [
+    {   // 🎵 Mitski – tím mơ
+        background: `
+        radial-gradient(circle at 30% 30%, rgba(170,120,255,.18), transparent 60%),
+        linear-gradient(135deg,#1a1028,#0f0b16,#1b1226)`,
+
+        moon: "radial-gradient(circle,#e0d4ff 40%,#8e6ad9 80%)",
+        stars: "rgba(210,180,255,.9)",
+        nebula1: "radial-gradient(circle, rgba(170,120,255,0.35), transparent 60%)",
+        nebula2: "radial-gradient(circle, rgba(120,80,255,0.25), transparent 60%)"
+    },
+
+    {   // 💗 Taylor – hồng romantic
+        background: `
+        radial-gradient(circle at 30% 30%, rgba(255,160,210,.18), transparent 60%),
+        linear-gradient(135deg,#2a0f1e,#140b14,#241222)`,
+
+        moon: "radial-gradient(circle,#ffd6ec 40%,#ff8fcf 80%)",
+        stars: "rgba(255,190,220,.9)",
+        nebula1: "radial-gradient(circle, rgba(255,120,200,0.35), transparent 60%)",
+        nebula2: "radial-gradient(circle, rgba(255,80,150,0.25), transparent 60%)"
+    },
+
+    {   // 🌅 Rocco – vàng vintage
+        background: `
+        radial-gradient(circle at 30% 30%, rgba(255,200,120,.18), transparent 60%),
+        linear-gradient(135deg,#2a1a0d,#140f0b,#241812)`,
+
+        moon: "radial-gradient(circle,#fff0c8 40%,#c89b4d 80%)",
+        stars: "rgba(255,220,150,.9)",
+        nebula1: "radial-gradient(circle, rgba(255,200,120,0.35), transparent 60%)",
+        nebula2: "radial-gradient(circle, rgba(200,150,80,0.25), transparent 60%)"
+    }
+];
+
+const audio=document.getElementById("audio");
+const grid=document.getElementById("grid");
+let currentIndex=-1;
+
+songs.forEach((song,index)=>{
+    const album=document.createElement("div");
+    album.className="album";
+    album.innerHTML=`
+        <img src="${song.cover}">
+        <div class="play-circle">▶</div>
+        <div style="margin-top:15px">${song.title}</div>
+    `;
+    album.onclick=()=>toggleSong(index);
+    grid.appendChild(album);
+});
+
+function toggleSong(index){
+
+    const moon = document.querySelector(".moon");
+    const stars = document.querySelectorAll(".star");
+    const neb1 = document.getElementById("nebula1");
+    const neb2 = document.getElementById("nebula2");
+
+    if(currentIndex===index && !audio.paused){
+
+        audio.pause();
+        document.querySelectorAll(".album")[index].classList.remove("playing");
+
+        location.reload(); // reset toàn bộ về trạng thái gốc
+
+    }else{
+
+        currentIndex=index;
+        audio.src=songs[index].file;
+        audio.play();
+
+        const theme = themes[index];
+
+        // 🌌 đổi background
+        document.body.style.background = theme.background;
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundAttachment = "fixed";
+
+
+        // 🌙 đổi moon
+        moon.style.background = theme.moon;
+
+        // ✨ đổi màu sao
+        stars.forEach(s => {
+            s.style.background = theme.stars;
+        });
+
+        // 🌫 đổi nebula
+        neb1.style.background = theme.nebula1;
+        neb2.style.background = theme.nebula2;
+
+        document.querySelectorAll(".album").forEach(a=>a.classList.remove("playing"));
+        document.querySelectorAll(".album")[index].classList.add("playing");
+    }
+}
+
+function nextSong(){
+    currentIndex=(currentIndex+1)%songs.length;
+    toggleSong(currentIndex);
+}
+
+function prevSong(){
+    currentIndex=(currentIndex-1+songs.length)%songs.length;
+    toggleSong(currentIndex);
+}
+
+audio.addEventListener("ended",nextSong);
+
+function goToNextPage(){
+
+    // fade out original UI
+    document.body.querySelectorAll("h1, .sub, .grid, .controls, button").forEach(el=>{
+        el.style.transition="1s";
+        el.style.opacity="0";
+    });
+
+    setTimeout(()=>{
+        const overlay=document.getElementById("ending");
+        overlay.classList.add("active");
+
+        // create sparkles
+        for(let i=0;i<25;i++){
+            const s=document.createElement("div");
+            s.className="sparkle";
+            s.style.left=Math.random()*100+"vw";
+            s.style.bottom="-10px";
+            s.style.animationDuration=4+Math.random()*4+"s";
+            overlay.appendChild(s);
+        }
+
+        const text=document.getElementById("endingText");
+
+        function showMessage(message,sizeClass=""){
+            text.className="ending-text "+sizeClass;
+            text.innerHTML=message;
+            setTimeout(()=>text.classList.add("show"),100);
+        }
+
+        // sequence
+setTimeout(()=>showMessage("To be continued…"),2000);
+setTimeout(()=>showMessage("with you.","small-text"),4000);
+setTimeout(()=>showMessage("🤮","small-text"),6000);   // ói
+setTimeout(()=>showMessage("🙄","small-text"),8000);   // side eye
+setTimeout(()=>showMessage("See you soon, my love.","small-text"),10000);
+setTimeout(()=>showMessage("Happy Valentine’s Day 🤍","small-text"),12000);
+
+    },1000);
+}
+
+
+</script>
+
+<div class="ending-overlay" id="ending">
+    <div class="light-rays"></div>
+    <div class="film-flicker"></div>
+    <div class="sunset-glow"></div>
+    <div class="ending-text" id="endingText"></div>
+</div>
+
+
+<div class="film-grain"></div>
+
+<div id="vintageOverlay"></div>
+
+</body>
+</html>

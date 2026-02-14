@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Valentine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    font-family:'Poppins',sans-serif;
+    transition:1.5s ease;
+    color:white;
+
+    /* Dark romantic gradient */
+    background: linear-gradient(-45deg, 
+        #0f0c29, 
+        #1b0f2f, 
+        #2b0a3d, 
+        #14001f
+    );
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+}
+
+/* Gradient animation */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Soft glowing light blobs */
+body::before,
+body::after{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    filter:blur(150px);
+    opacity:0.4;
+    z-index:-1;
+}
+
+body::before{
+    background:#ff2f92;
+    top:-200px;
+    left:-200px;
+}
+
+body::after{
+    background:#9d00ff;
+    bottom:-200px;
+    right:-200px;
+}
+
+
+/* Gradient animation */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Soft glow lights */
+body::before,
+body::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.4;
+    z-index:-1;
+}
+
+body::before{
+    background:#ff6fa5;
+    top:-150px;
+    left:-150px;
+}
+
+body::after{
+    background:#ff9ed2;
+    bottom:-150px;
+    right:-150px;
+}
+
+
+/* ===== INTRO ===== */
+.intro{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(10,0,20,0.8);
+    backdrop-filter: blur(10px);
+    z-index:999;
+}
+
+
+.introText{
+    font-size:60px;
+    font-family:'Pacifico', cursive;
+    color:#ff4f81;
+    opacity:0;
+    transform:translateY(20px);
+    text-shadow:0 0 25px rgba(255,150,180,0.5);
+    animation:fadeIn 2.5s ease forwards;
+}
+
+@keyframes fadeIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* MAIN */
+.main{
+    opacity:0;
+    text-align:center;
+    transition:2s;
+}
+
+.main.show{
+    opacity:1;
+}
+
+h1{
+    font-family:'Pacifico',cursive;
+    color:#ff6f91;
+    font-size:60px;
+    margin-bottom:50px;
+}
+
+/* ENVELOPE */
+.envelope{
+    position:relative;
+    width:300px;
+    height:200px;
+    background:#f8b7c4;
+    border-radius:12px;
+    cursor:pointer;
+    box-shadow:0 15px 40px rgba(255,120,150,0.4);
+    perspective:1000px;
+    margin:auto;
+    transition:transform 1.5s ease;
+}
+
+.envelope.zoom{
+    transform:scale(1.2);
+}
+
+.flap{
+    position:absolute;
+    width:0;
+    height:0;
+    border-left:150px solid transparent;
+    border-right:150px solid transparent;
+    border-top:100px solid #f39fb2;
+    transform-origin:top;
+    transition:1s;
+}
+
+.envelope.open .flap{
+    transform:rotateX(180deg);
+}
+
+.heart{
+    position:absolute;
+    top:75px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:40px;
+    animation:heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat{
+    0%{transform:translateX(-50%) scale(1);}
+    50%{transform:translateX(-50%) scale(1.2);}
+    100%{transform:translateX(-50%) scale(1);}
+}
+
+/* SPARKLES */
+.sparkle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    animation:floatUp 6s linear infinite;
+}
+
+.floating-heart{
+    position:absolute;
+    font-size:20px;
+    animation:floatUp 7s linear infinite;
+    opacity:0.6;
+}
+
+@keyframes floatUp{
+    from{ transform:translateY(100vh); opacity:1;}
+    to{ transform:translateY(-10vh); opacity:0;}
+}
+
+/* ===== LOVE PAGE ===== */
+.lovePage{
+    position:fixed;
+    inset:0;
+    background:rgba(20,0,40,0.85);
+    backdrop-filter: blur(15px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition:1.8s ease;
+    transform:scale(1.1);
+}
+
+
+.lovePage.show{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+
+h1, .lovePage h2{
+    font-family:'Pacifico', cursive !important;
+    font-weight:400;
+    font-size:85px;   /* tăng size ở đây */
+    letter-spacing:2px;
+    color:#ffffff;
+    text-shadow:
+        0 0 10px rgba(255,0,150,0.6),
+        0 0 20px rgba(255,0,200,0.4),
+        0 0 40px rgba(180,0,255,0.3);
+}
+
+
+
+
+.lovePage p{
+    max-width:500px;
+    font-size:18px;
+    color:#f5c6ff;
+}
+
+
+/* ===== BACK BUTTON ===== */
+.backBtn{
+    position:fixed;
+    bottom:25px;
+    left:25px;
+    width:55px;
+    height:55px;
+    background:transparent;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.backBtn svg{
+    width:32px;
+    height:32px;
+    stroke:#ff4f81;
+    stroke-width:3;
+    fill:none;
+    transition:0.35s ease;
+}
+
+.backBtn:hover svg{
+    stroke:#ff2f6d;
+    transform:translateX(-6px);
+    filter:drop-shadow(0 0 8px rgba(255,80,130,0.6));
+}
+
+.backBtn:active svg{
+    transform:scale(0.9);
+}
+
+/* NAV HEART BUTTON + TRANSITION */
+#navHeartBtn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:linear-gradient(180deg,#ff6f91,#ff3a78);
+    color:white;
+    font-size:28px;
+    border:none;
+    display:none; /* hidden until envelope is opened */
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:1100;
+    box-shadow:0 12px 30px rgba(255,80,140,0.18);
+    transform-origin:center;
+    transition:transform .22s ease, box-shadow .22s ease;
+}
+#navHeartBtn.show{ display:flex; }
+#navHeartBtn:hover{ transform:scale(1.08); box-shadow:0 18px 40px rgba(255,80,140,0.24); }
+#navHeartBtn:active{ transform:scale(.96); }
+
+#navHeartBtn.pulse{ animation:navPulse 1.6s infinite; }
+@keyframes navPulse{ 0%{ transform:scale(1); } 50%{ transform:scale(1.06); } 100%{ transform:scale(1); } }
+
+/* full-screen overlay used during transition */
+#transitionOverlay{
+    position:fixed; inset:0; background:radial-gradient(circle at 30% 30%, rgba(255,110,160,0.18), rgba(255,40,120,0.9)), linear-gradient(135deg,#ff9ecf,#ff4da6);
+    opacity:0; pointer-events:none; transition:opacity .56s ease; z-index:1200; mix-blend-mode:screen;
+}
+#transitionOverlay.show{ opacity:1; pointer-events:auto; }
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="intro" id="introScreen">
+    <div class="introText" id="nameText"></div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+    <h1>Happy Valentine's 💕</h1>
+
+    <div class="envelope" id="envelope">
+        <div class="flap"></div>
+        <div class="heart">❤️</div>
+    </div>
+</div>
+
+<!-- LOVE PAGE -->
+<div class="lovePage" id="lovePage">
+<button class="backBtn" id="backBtn">
+    <svg viewBox="0 0 24 24">
+        <path d="M15 6L9 12L15 18" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+</button>
+
+<h2>For my baby :> 💖</h2>
+<p class="loveText">
+    Today’s Valentine’s Dayyy!! <br> 
+
+I just wanna say I hope my bbg is always happy and doing okay 😚. <br>
+ I hope you keep that cute smile, don't overthink too much and always remember how loved you are.<br>
+
+I hope all the good things find their way to you. <br>
+And I hope thattt… <br>
+ we'll stay together for a reallyyy, reallyyy long timeeee<br>
+
+Forever 😛<br>
+
+I love you mwah mwah mwahhh.
+</p>
+</div>
+
+<!-- AUDIO -->
+<!-- heart nav button + overlay -->
+<button id="navHeartBtn" title="Go to next scene">💘</button>
+<div id="transitionOverlay"></div>
+
+<audio id="bgMusic" autoplay loop playsinline preload="auto">
+    <source src="iloveyou3000.mp3" type="audio/mpeg">
+</audio>
+<button id="playAudioBtn" aria-label="Play background music">Play music</button>
+<audio id="whoosh" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+
+<script>
+const loverName = " For the love of my life 💖";
+
+const introScreen = document.getElementById("introScreen");
+const nameText = document.getElementById("nameText");
+const main = document.getElementById("mainContent");
+const envelope = document.getElementById("envelope");
+const bgMusic = document.getElementById("bgMusic");
+const whoosh = document.getElementById("whoosh");
+const lovePage = document.getElementById("lovePage");
+const backBtn = document.getElementById("backBtn");
+const navHeartBtn = document.getElementById("navHeartBtn");
+const transitionOverlay = document.getElementById("transitionOverlay");
+
+nameText.innerText = loverName;
+
+// Autoplay handling: attempt to play; if blocked, show a play button for user gesture
+const _bgMusic = document.getElementById('bgMusic');
+const _playBtn = document.getElementById('playAudioBtn');
+
+function fadeInMusic(targetVol = 0.4, step = 0.02, interval = 200){
+    if(!_bgMusic) return;
+    _bgMusic.volume = 0;
+    let vol = 0;
+    _bgMusic.play().catch(()=>{});
+    const fade = setInterval(()=>{
+        if(vol < targetVol){ vol += step; _bgMusic.volume = Math.min(vol, targetVol); }
+        else clearInterval(fade);
+    }, interval);
+}
+
+function tryAutoPlayAudio(){
+    if(!_bgMusic) return;
+    const p = _bgMusic.play();
+    if(p !== undefined){
+        p.then(()=>{
+            if(_playBtn) _playBtn.style.display = 'none';
+            fadeInMusic();
+        }).catch(()=>{
+            if(_playBtn) _playBtn.style.display = 'block';
+        });
+    }
+}
+
+if(_playBtn){
+    _playBtn.addEventListener('click', ()=>{
+        fadeInMusic();
+        _playBtn.style.display = 'none';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', tryAutoPlayAudio);
+
+/* Hide intro */
+setTimeout(()=>{
+    introScreen.style.opacity="0";
+    setTimeout(()=>{
+        introScreen.style.display="none";
+        main.classList.add("show");
+    },1500);
+},3000);
+
+/* Sparkles */
+function createSparkle(){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(4+Math.random()*3)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),7000);
+}
+setInterval(createSparkle,300);
+
+/* Floating hearts */
+function createHeart(){
+    const heart=document.createElement("div");
+    heart.className="floating-heart";
+    heart.innerText="💗";
+    heart.style.left=Math.random()*100+"vw";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),8000);
+}
+setInterval(createHeart,1200);
+
+/* OPEN ENVELOPE */
+envelope.addEventListener("click",()=>{
+    whoosh.play();
+    envelope.classList.add("open","zoom");
+
+    setTimeout(()=>{
+        main.style.opacity="0";
+    },1000);
+
+    setTimeout(()=>{
+        main.style.display="none";
+        lovePage.classList.add("show");
+        // show nav heart button after opening the letter
+        if(navHeartBtn){
+            navHeartBtn.classList.add('show');
+            setTimeout(()=>navHeartBtn.classList.add('pulse'),300);
+        }
+    },2000);
+});
+
+/* BACK */
+backBtn.addEventListener("click",()=>{
+    whoosh.play();
+    lovePage.classList.remove("show");
+
+    setTimeout(()=>{
+        main.style.display="block";
+        envelope.classList.remove("open","zoom");
+        setTimeout(()=>main.style.opacity="1",50);
+    },800);
+});
+
+/* NAV HEART: transition to another page with effect */
+if(navHeartBtn){
+    navHeartBtn.addEventListener('click', ()=>{
+        // play whoosh and show overlay then navigate
+        if(whoosh) try{ whoosh.currentTime=0; whoosh.play(); }catch(e){}
+        navHeartBtn.disabled = true;
+        navHeartBtn.classList.remove('pulse');
+        transitionOverlay.classList.add('show');
+        // fade out music while overlay appears, then navigate
+        fadeOutAndNavigate('gallery 10.html', 600);
+    });
+}
+
+// Smoothly reduce background music volume over `duration` ms, then navigate
+function fadeOutAndNavigate(url, duration = 600){
+    if(!_bgMusic){ window.location.href = url; return; }
+    try{
+        const startVol = _bgMusic.volume || 0.4;
+        const steps = Math.max(8, Math.ceil(duration / 50));
+        const stepTime = duration / steps;
+        let currentStep = 0;
+        const volStep = startVol / steps;
+        const t = setInterval(()=>{
+            currentStep++;
+            const newVol = Math.max(0, startVol - volStep * currentStep);
+            _bgMusic.volume = newVol;
+            if(currentStep >= steps){
+                clearInterval(t);
+                try{ _bgMusic.pause(); }catch(e){}
+                window.location.href = url;
+            }
+        }, stepTime);
+    }catch(e){ window.location.href = url; }
+}
+</script>
+
+</body>
+</html>

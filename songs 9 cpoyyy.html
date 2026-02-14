@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Little Universe ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg,#0f2027,#1b2735,#090a0f,#141e30);
+    background-size:400% 400%;
+    animation: gradientShift 25s ease infinite;
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
+
+@keyframes gradientShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ====== NEBULA ====== */
+
+.nebula, .nebula2{
+    position:fixed;
+    width:900px;
+    height:900px;
+    filter:blur(140px);
+    z-index:-4;
+    opacity:0.5;
+}
+
+.nebula{
+    background:radial-gradient(circle, rgba(255,90,200,0.3), transparent 60%);
+    top:-300px;
+    left:-200px;
+    animation: floatNebula 60s infinite alternate ease-in-out;
+}
+
+.nebula2{
+    background:radial-gradient(circle, rgba(80,120,255,0.3), transparent 60%);
+    bottom:-300px;
+    right:-200px;
+    animation: floatNebula 80s infinite alternate ease-in-out;
+}
+
+@keyframes floatNebula{
+    from{transform:translate(0,0);}
+    to{transform:translate(150px,80px);}
+}
+
+/* ====== MOON ====== */
+
+.moon{
+    position:fixed;
+    top:80px;
+    right:120px;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ffffff 40%,#ddd 70%);
+    box-shadow:0 0 80px 35px rgba(255,255,255,0.4);
+    animation: moonGlow 4s ease-in-out infinite alternate;
+    z-index:-1;
+}
+
+@keyframes moonGlow{
+    from{box-shadow:0 0 60px 25px rgba(255,255,255,0.3);}
+    to{box-shadow:0 0 120px 50px rgba(255,255,255,0.6);}
+}
+
+/* ====== STARS ====== */
+
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-3;
+}
+
+.star{
+    position:absolute;
+    background:white;
+    border-radius:50%;
+    animation: twinkle 3s infinite alternate ease-in-out;
+}
+
+@keyframes twinkle{
+    from{opacity:0.2; transform:scale(1);}
+    to{opacity:1; transform:scale(1.6);}
+}
+
+/* ====== DUST PARTICLES ====== */
+
+.dust{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-2;
+}
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:rgba(255, 255, 255, 0.132);
+    border-radius:50%;
+    animation: drift 20s linear infinite;
+}
+
+@keyframes drift{
+    from{transform:translateY(0);}
+    to{transform:translateY(-120vh);}
+}
+
+/* ====== SHOOTING STAR ====== */
+
+@keyframes shoot{
+    0%{transform:translate(0,0) rotate(45deg);opacity:1;}
+    100%{transform:translate(-100vw,100vh) rotate(45deg);opacity:0;}
+}
+
+/* ====== UI ====== */
+
+h1{
+    margin-top:80px;
+    font-weight:300;
+    font-size:50px;
+    letter-spacing:3px;
+}
+
+.sub{
+    opacity:0.8;
+}
+
+.grid{
+    margin-top:60px;
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    flex-wrap:wrap;
+}
+
+.album{
+    width:220px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(18px);
+    padding:15px;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.4s;
+    position:relative;
+}
+
+.album:hover{
+    transform:translateY(-12px) scale(1.05);
+}
+
+.album img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:20px;
+}
+
+.play-circle{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#ff7bd5,#ff4da6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    opacity:0;
+    transition:0.4s;
+}
+
+.album:hover .play-circle{
+    opacity:1;
+}
+
+.playing{
+    box-shadow:0 0 40px rgba(255,120,200,0.9);
+}
+
+button{
+    margin:20px;
+    background:none;
+    border:1px solid rgba(255,255,255,0.4);
+    color:white;
+    padding:12px 25px;
+    border-radius:40px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:rgba(255, 255, 255, 0.062);
+}
+
+.message{
+    margin-top:50px;
+    opacity:0.7;
+}
+/* ====== ENDING SEQUENCE ====== */
+
+/* ====== NEW ENDING SEQUENCE ====== */
+
+.ending-overlay{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#2a0f18,#4a1626,#1a0a12);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    opacity:0;
+    pointer-events:none;
+    transition:1.8s ease;
+    z-index:5000;
+    overflow:hidden;
+}
+
+.ending-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* soft sunset glow */
+
+.sunset-glow{
+    position:absolute;
+    inset:-20%;
+    background:radial-gradient(circle at 40% 60%,
+        rgba(255,140,110,0.35),
+        rgba(255,90,120,0.15),
+        transparent 60%);
+    animation:sunsetFade 8s ease forwards;
+}
+
+@keyframes sunsetFade{
+    from{opacity:1;}
+    to{opacity:0.2;}
+}
+
+/* sparkles */
+
+.sparkle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    opacity:.7;
+    animation:floatUp 7s linear infinite;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0); opacity:0.9;}
+    to{transform:translateY(-120vh); opacity:0;}
+}
+
+/* main text style */
+
+.ending-text{
+    font-family:'Great Vibes', cursive;
+    font-size:70px;
+    opacity:0;
+    transform:translateY(25px) scale(0.98);
+    transition:1.2s ease;
+    text-align:center;
+    color:#ffd6e8;
+    text-shadow:
+        0 0 15px rgba(255,120,160,0.5),
+        0 0 40px rgba(255,80,140,0.3);
+}
+
+.ending-text.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+.small-text{
+    font-family:'Playfair Display', serif;
+    font-size:32px;
+    letter-spacing:1px;
+    color:#ffe9f3;
+}
+
+/* INTRO OVERLAY */
+.intro-overlay{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#070710,#14121a);
+    z-index:6000;
+    transition:opacity .8s ease;
+}
+.intro-overlay.hidden{ opacity:0; pointer-events:none }
+.intro-text{
+    font-family:'Playfair Display', serif;
+    font-size:56px;
+    line-height:1.05;
+    letter-spacing:0.6px;
+    color:#ffe9f3;
+    text-align:center;
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .9s ease, transform .9s ease;
+    text-shadow:0 6px 24px rgba(0,0,0,0.5);
+}
+.intro-text.show{ opacity:1; transform:translateY(0) }
+
+
+</style>
+</head>
+
+<body>
+
+<div class="nebula"></div>
+<div class="nebula2"></div>
+<div class="stars" id="stars"></div>
+<div class="dust" id="dust"></div>
+<div class="moon"></div>
+
+<!-- Intro overlay (shows before main UI) -->
+<div class="intro-overlay" id="introOverlay">
+    <div class="intro-text" id="introText"></div>
+</div>
+
+<h1 style="opacity:0;pointer-events:none;transition:.6s">SONGS REMIND ME OF YOU </h1>
+<div class="sub" style="opacity:0;pointer-events:none">Click on an album to play/pause 🎵</div>
+<div class="grid" id="grid" style="opacity:0;pointer-events:none"></div>
+
+<div class="controls" style="opacity:0;pointer-events:none">
+    <button onclick="prevSong()">⏮ Previous</button>
+    <button onclick="nextSong()">Next ⏭</button>
+</div>
+
+<button onclick="goToNextPage()" style="margin-top:30px;opacity:0;pointer-events:none">
+                🤍
+            </button>
+
+<audio id="audio"></audio>
+
+<script>
+/* Stars */
+const stars = document.getElementById("stars");
+for(let i=0;i<120;i++){
+    const star = document.createElement("div");
+    star.className="star";
+    let size=Math.random()*3+1;
+    star.style.width=size+"px";
+    star.style.height=size+"px";
+    star.style.top=Math.random()*100+"%";
+    star.style.left=Math.random()*100+"%";
+    star.style.animationDuration=(Math.random()*3+2)+"s";
+    stars.appendChild(star);
+}
+
+/* Dust */
+const dust=document.getElementById("dust");
+for(let i=0;i<40;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"%";
+    p.style.top=Math.random()*100+"vh";
+    p.style.animationDuration=(Math.random()*20+10)+"s";
+    dust.appendChild(p);
+}
+
+/* Shooting Star */
+function shootingStar(){
+    const star=document.createElement("div");
+    star.style.position="fixed";
+    star.style.width="200px";
+    star.style.height="2px";
+    star.style.background="linear-gradient(90deg,#fff,transparent)";
+    star.style.top=Math.random()*40+"%";
+    star.style.right="-200px";
+    star.style.animation="shoot 2s linear forwards";
+    document.body.appendChild(star);
+    setTimeout(()=>star.remove(),2000);
+}
+setInterval(shootingStar,7000);
+
+/* Intro sequence: show a few lines, then reveal main UI */
+(function(){
+    const introLines = [
+        "Not only that,",
+        "something that reminds me of you is…",
+        "MUSIC."
+    ];
+    const introTextEl = document.getElementById('introText');
+    const introOverlay = document.getElementById('introOverlay');
+    let idx = 0;
+
+    function showNext(){
+        if(idx < introLines.length){
+            introTextEl.classList.remove('show');
+            setTimeout(()=>{
+                introTextEl.textContent = introLines[idx];
+                introTextEl.classList.add('show');
+                idx++;
+            }, 400);
+        } else {
+            // hide overlay and reveal main UI (give a small pause)
+            setTimeout(()=>{
+                introOverlay.classList.add('hidden');
+                setTimeout(()=>{ introOverlay.style.display='none'; revealMain(); }, 1000);
+            }, 1200);
+            clearInterval(timer);
+        }
+    }
+
+    function revealMain(){
+        document.querySelectorAll('h1, .sub, .grid, .controls, button[onclick="goToNextPage()"]').forEach(el=>{
+            el.style.transition='0.8s';
+            el.style.opacity=1;
+            el.style.pointerEvents='auto';
+        });
+    }
+
+    // start first line shortly after load (slower)
+    setTimeout(()=>{
+       introTextEl.textContent = introLines[0];
+       introTextEl.classList.add('show');
+       idx = 1;
+    }, 1200);
+
+    const timer = setInterval(showNext, 2600);
+})();
+
+/* Music */
+const songs=[
+    {title:"My Love Mine All Mine - Mitski",file:"My Love Mine All Mine.mp3",cover:"mylove.png"},
+    {title:"Lover - Taylor Swift",file:"Lover.mp3",cover:"lover.png"},
+    {title:"l-o-v-e - Rocco",file:"l-o-v-e.mp3",cover:"l-o-v-e.png"}
+];
+
+const audio=document.getElementById("audio");
+const grid=document.getElementById("grid");
+let currentIndex=-1;
+
+songs.forEach((song,index)=>{
+    const album=document.createElement("div");
+    album.className="album";
+    album.innerHTML=`
+        <img src="${song.cover}">
+        <div class="play-circle">▶</div>
+        <div style="margin-top:15px">${song.title}</div>
+    `;
+    album.onclick=()=>toggleSong(index);
+    grid.appendChild(album);
+});
+
+function toggleSong(index){
+    if(currentIndex===index && !audio.paused){
+        audio.pause();
+        document.querySelectorAll(".album")[index].classList.remove("playing");
+    }else{
+        currentIndex=index;
+        audio.src=songs[index].file;
+        audio.play();
+        document.querySelectorAll(".album").forEach(a=>a.classList.remove("playing"));
+        document.querySelectorAll(".album")[index].classList.add("playing");
+    }
+}
+
+function nextSong(){
+    currentIndex=(currentIndex+1)%songs.length;
+    toggleSong(currentIndex);
+}
+
+function prevSong(){
+    currentIndex=(currentIndex-1+songs.length)%songs.length;
+    toggleSong(currentIndex);
+}
+
+audio.addEventListener("ended",nextSong);
+
+function goToNextPage(){
+
+    // fade out original UI
+    document.body.querySelectorAll("h1, .sub, .grid, .controls, button").forEach(el=>{
+        el.style.transition="1s";
+        el.style.opacity="0";
+    });
+
+    setTimeout(()=>{
+        const overlay=document.getElementById("ending");
+        overlay.classList.add("active");
+
+        // create sparkles
+        for(let i=0;i<25;i++){
+            const s=document.createElement("div");
+            s.className="sparkle";
+            s.style.left=Math.random()*100+"vw";
+            s.style.bottom="-10px";
+            s.style.animationDuration=4+Math.random()*4+"s";
+            overlay.appendChild(s);
+        }
+
+        const text=document.getElementById("endingText");
+
+        function showMessage(message,sizeClass=""){
+            text.className="ending-text "+sizeClass;
+            text.innerHTML=message;
+            setTimeout(()=>text.classList.add("show"),100);
+        }
+
+        // sequence
+setTimeout(()=>showMessage("To be continued…"),2000);
+setTimeout(()=>showMessage("with you.","small-text"),4000);
+setTimeout(()=>showMessage("🤮","small-text"),6000);   // ói
+setTimeout(()=>showMessage("🙄","small-text"),8000);   // side eye
+setTimeout(()=>showMessage("See you soon, my love.","small-text"),10000);
+setTimeout(()=>showMessage("Happy Valentine’s Day 🤍","small-text"),12000);
+
+    },1000);
+}
+
+
+</script>
+
+<div class="ending-overlay" id="ending">
+    <div class="sunset-glow"></div>
+    <div class="ending-text" id="endingText"></div>
+</div>
+
+</body>
+</html>

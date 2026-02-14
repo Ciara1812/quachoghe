@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Love Route</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#f1e3c6;
+  --ink:#3b2c22;
+  --gold:#c6a46c;
+  --deep:#1a1410;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Cormorant Garamond', serif;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:#1a1410;
+}
+
+/* Film grain */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity:.15;
+  pointer-events:none;
+}
+
+/* Vignette */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle,transparent 50%,rgba(0,0,0,.6));
+  pointer-events:none;
+}
+
+/* CARD = parchment paper */
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  padding:50px;
+  width:900px;
+  max-width:95%;
+  border:2px solid rgba(198,164,108,.4);
+  box-shadow:
+    0 0 60px rgba(0,0,0,.6),
+    inset 0 0 80px rgba(0,0,0,.15);
+  text-align:center;
+  position:relative;
+}
+
+/* Burned paper edges */
+.card::after{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(0,0,0,.25) 0%, transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(0,0,0,.25) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(0,0,0,.25) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(0,0,0,.25) 0%, transparent 40%);
+  mix-blend-mode:multiply;
+}
+
+
+/* subtle old paper stain */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 20% 30%, rgba(0,0,0,.06), transparent 50%);
+  pointer-events:none;
+}
+
+/* text */
+.mlabel{
+  fill:var(--ink);
+  font-weight:600;
+  font-size:18px;
+  font-family:'Cinzel', serif;
+  letter-spacing:2px;
+}
+
+/* GOLD ROUTE */
+.routeGlow{
+  stroke:var(--gold);
+  stroke-width:5;
+  filter:
+    drop-shadow(0 0 6px rgba(198,164,108,.7))
+    drop-shadow(0 0 12px rgba(198,164,108,.4));
+}
+
+#route{
+  animation: dashMove 6s linear infinite;
+}
+@keyframes dashMove{
+  from{ stroke-dashoffset:0; }
+  to{ stroke-dashoffset:100; }
+}
+
+/* Small hearts vintage tone */
+.heart{
+  opacity:.85;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,.3));
+}
+
+/* CENTER HEART – wax seal style */
+.centerHeart{
+  cursor:pointer;
+  transform-origin:center;
+  transition:.4s;
+  fill:#8b1e1e;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.4));
+}
+
+.centerHeart:hover{
+  transform:scale(1.2);
+}
+
+/* Countdown vintage */
+.countdown{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:140px;
+  font-family:'Cinzel', serif;
+  color:var(--gold);
+  background:rgba(0,0,0,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+  z-index:999;
+  text-shadow:0 0 20px rgba(198,164,108,.6);
+}
+
+.countdown.show{
+  opacity:1;
+}
+
+/* Play button vintage */
+#playAudioBtn{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:var(--gold);
+  color:var(--deep);
+  border:0;
+  padding:10px 18px;
+  border-radius:4px;
+  font-family:'Cinzel', serif;
+  font-weight:600;
+  letter-spacing:1px;
+  cursor:pointer;
+  box-shadow:0 5px 20px rgba(0,0,0,.4);
+}
+#playAudioBtn:active{transform:scale(.96)}
+
+.corner{
+  position:fixed;
+  width:170px;
+  height:170px;
+  pointer-events:none;
+  opacity:.65;
+  filter:drop-shadow(0 0 10px rgba(198,164,108,.5));
+}
+.corner svg{
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:#c6a46c;
+  stroke-width:1.1;
+}
+.top-left{top:10px;left:10px}
+.top-right{top:10px;right:10px;transform:scaleX(-1)}
+.bottom-left{bottom:10px;left:10px;transform:scaleY(-1)}
+.bottom-right{bottom:10px;right:10px;transform:scale(-1)}
+
+.seal{
+  position:absolute;
+  bottom:25px;
+  right:40px;
+  width:130px;
+  height:130px;
+  background:#8b1e1e;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  color:#f5e6d3;
+  text-align:center;
+  letter-spacing:1px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,.4),
+    0 6px 15px rgba(0,0,0,.4);
+  transform:rotate(-18deg);
+}
+
+/* Ground */
+.ground{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:130px;
+  background:
+    linear-gradient(to top, #2a2018 0%, #3b2c22 40%, transparent 100%);
+  box-shadow: inset 0 15px 30px rgba(0,0,0,.5);
+  pointer-events:none;
+  z-index:5;
+}
+
+
+/* Falling animals */
+
+
+
+
+
+ .frogSecret{
+  position:absolute;
+  top:25px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Cinzel', serif;
+  font-size:13px;
+  letter-spacing:2px;
+  color:var(--gold);
+  opacity:.6;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.frogSecret:hover{
+  opacity:1;
+  text-shadow:0 0 8px rgba(198,164,108,.7);
+}
+
+.frogDrop{
+  position:fixed;
+  top:-120px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:70px;
+  animation: frogFall 1.6s cubic-bezier(.3,1.3,.4,1) forwards;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,.6));
+  z-index:1000;
+}
+
+@keyframes frogFall{
+  0%{ top:-120px; }
+  70%{ top:60vh; }
+  85%{ top:55vh; }
+  100%{ top: calc(100vh - 160px); }
+}
+
+
+</style>
+</head>
+
+<body>
+
+    <audio id="bgMusic" autoplay loop playsinline preload="auto">
+      <source src="understand.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="playAudioBtn" aria-label="Play background music"> Play music</button>
+
+
+<div id="pageRoot">
+
+  <div class="corner top-left">
+<svg viewBox="0 0 200 200">
+  <path d="M10 190 Q10 10 190 10"/>
+  <path d="M30 170 Q30 30 170 30"/>
+  <path d="M60 150 Q60 60 150 60"/>
+  <path d="M20 120 Q60 80 120 20"/>
+  <circle cx="60" cy="60" r="5"/>
+</svg>
+</div>
+<div class="corner top-right"><svg viewBox="0 0 200 200">
+  <path d="M10 190 Q10 10 190 10"/>
+  <path d="M30 170 Q30 30 170 30"/>
+  <path d="M60 150 Q60 60 150 60"/>
+  <path d="M20 120 Q60 80 120 20"/>
+  <circle cx="60" cy="60" r="5"/>
+</svg></div>
+<div class="corner bottom-left"><svg viewBox="0 0 200 200">
+  <path d="M10 190 Q10 10 190 10"/>
+  <path d="M30 170 Q30 30 170 30"/>
+  <path d="M60 150 Q60 60 150 60"/>
+  <path d="M20 120 Q60 80 120 20"/>
+  <circle cx="60" cy="60" r="5"/>
+</svg></div>
+<div class="corner bottom-right"><svg viewBox="0 0 200 200">
+  <path d="M10 190 Q10 10 190 10"/>
+  <path d="M30 170 Q30 30 170 30"/>
+  <path d="M60 150 Q60 60 150 60"/>
+  <path d="M20 120 Q60 80 120 20"/>
+  <circle cx="60" cy="60" r="5"/>
+</svg></div>
+
+<div class="card">
+
+  <div class="seal">
+  Valentine
+</div>
+
+<div class="frogSecret" onclick="dropFrog()">
+    L
+  </div>
+
+<div class="map">
+<svg viewBox="0 0 800 450"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<path id="route"
+      class="routeGlow"
+      d="
+      M400 270
+      C 400 180 300 150 250 230
+      C 200 320 350 380 400 410
+      C 450 380 600 320 550 230
+      C 500 150 400 180 400 270
+      "
+      fill="none"
+      stroke-dasharray="8 10"
+      stroke-linecap="round"/>
+
+<g id="hearts"></g>
+
+<circle cx="250" cy="230" r="10" fill="#3b2c22" opacity=".8"/>
+<text x="250" y="260" text-anchor="middle" class="mlabel">Lý</text>
+
+<circle cx="550" cy="230" r="10" fill="#3b2c22" opacity=".8"/>
+<text x="550" y="260" text-anchor="middle" class="mlabel">Naura</text>
+
+<path class="centerHeart"
+      onclick="goNext()"
+      d="M400 260
+         C390 235 350 235 350 270
+         C350 300 400 330 400 330
+         C400 330 450 300 450 270
+         C450 235 410 235 400 260 Z"
+      fill="#ff4da6"/>
+
+</svg>
+
+</div>
+
+</div>
+
+<div id="countdown" class="countdown"></div>
+
+<script>
+// Autoplay handling: attempt to play; if blocked, show a play button for user gesture
+const _bgMusic = document.getElementById('bgMusic');
+const _playBtn = document.getElementById('playAudioBtn');
+
+// debug: log bgMusic events
+if(_bgMusic){
+  _bgMusic.addEventListener('play', ()=>console.log('[bgMusic] event: play'));
+  _bgMusic.addEventListener('pause', ()=>console.log('[bgMusic] event: pause'));
+  _bgMusic.addEventListener('ended', ()=>console.log('[bgMusic] event: ended'));
+  _bgMusic.addEventListener('error', (e)=>console.log('[bgMusic] event: error', e));
+}
+
+function tryAutoPlayAudio(){
+  if(!_bgMusic) return;
+  const params = new URLSearchParams(window.location.search);
+  const wantAuto = params.get('autoplay') === '1';
+
+  const p = _bgMusic.play();
+  if(p !== undefined){
+    p.then(()=>{
+      if(_playBtn) _playBtn.style.display='none';
+      if(wantAuto){
+        // remove autoplay param from URL
+        params.delete('autoplay');
+        const newUrl = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '');
+        history.replaceState({}, '', newUrl);
+      }
+    }).catch(()=>{ if(_playBtn) _playBtn.style.display='block'; });
+  }
+}
+
+if(_playBtn){
+  _playBtn.addEventListener('click', ()=>{
+    if(!_bgMusic) return;
+    _bgMusic.play().then(()=>{ _playBtn.style.display='none'; }).catch(()=>{});
+  });
+}
+
+document.addEventListener('DOMContentLoaded', tryAutoPlayAudio);
+
+const heartsContainer = document.getElementById("hearts");
+const countdownEl = document.getElementById("countdown");
+let counting = false;
+
+/* Tim bay theo route */
+for(let i=0;i<27;i++){
+  let heart = document.createElementNS("http://www.w3.org/2000/svg","path");
+  heart.setAttribute("d","M0 -5 C-4 -14 -18 -14 -18 -2 C-18 8 0 16 0 16 C0 16 18 8 18 -2 C18 -14 4 -14 0 -5 Z");
+  heart.setAttribute("fill", i%2==0 ? "#c6a46c" : "#b08b57");
+  heart.setAttribute("class","heart");
+
+  let motion = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
+  motion.setAttribute("dur", (14 + Math.random()*6) + "s");
+  motion.setAttribute("begin", (-Math.random()*14) + "s");
+  motion.setAttribute("repeatCount","indefinite");
+  motion.setAttribute("rotate","auto");
+
+  let mpath = document.createElementNS("http://www.w3.org/2000/svg","mpath");
+  mpath.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","#route");
+
+  motion.appendChild(mpath);
+  heart.appendChild(motion);
+  heartsContainer.appendChild(heart);
+}
+
+/* Floating particles */
+for(let i=0;i<25;i++){
+  const p = document.createElement("div");
+  p.className="particle";
+  p.style.left = Math.random()*100+"vw";
+  p.style.bottom = "-10px";
+  p.style.animationDuration = 8 + Math.random()*6 + "s";
+  p.style.animationDelay = Math.random()*5 + "s";
+  document.body.appendChild(p);
+}
+
+/* Countdown 5s */
+function goNext(){
+
+  if(counting) return;
+  counting = true;
+
+
+  let timeLeft = 5;
+  countdownEl.innerText = timeLeft;
+  countdownEl.classList.add("show");
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    countdownEl.innerText = timeLeft;
+
+    if(timeLeft <= 0){
+      clearInterval(timer);
+      loadPage('index 6 copy 2.html');
+    }
+  },1000);
+
+}
+
+
+// Load another HTML file and replace #pageRoot content while keeping persistent audio
+async function loadPage(url){
+  try{
+    const existingBefore = document.getElementById('bgMusic');
+    console.log('[loadPage] start ->', url, 'bgMusic before:', existingBefore ? {paused: existingBefore.paused, src: existingBefore.currentSrc||existingBefore.src} : null);
+    const res = await fetch(url);
+    if(!res.ok) return window.location.href = url; // fallback to full nav
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+
+    const newBody = doc.body;
+    // remove any audio elements from the fetched content so the persistent audio stays
+    const audios = newBody.querySelectorAll('audio');
+    audios.forEach(a=>a.remove());
+
+    const pageRoot = document.getElementById('pageRoot');
+    if(pageRoot){
+      pageRoot.innerHTML = newBody.innerHTML;
+    } else {
+      document.body.innerHTML = newBody.innerHTML; // fallback
+    }
+
+    // update title
+    if(doc.title) document.title = doc.title;
+
+    // execute scripts from fetched document
+    const scripts = doc.querySelectorAll('script');
+    for(const s of scripts){
+      if(s.src){
+        await new Promise((res, rej)=>{
+          const sc = document.createElement('script');
+          sc.src = s.src;
+          sc.onload = res; sc.onerror = rej;
+          document.body.appendChild(sc);
+        }).catch(()=>{});
+      } else {
+        try{ eval(s.textContent); }catch(e){}
+      }
+    }
+
+    // ensure persistent background audio keeps playing (resume if needed)
+    try{
+      const existingBg = document.getElementById('bgMusic');
+      if(existingBg && existingBg.paused === true){
+        existingBg.play().catch(()=>{});
+      }
+    }catch(e){}
+
+    // update history so back button works
+    history.pushState({}, '', url);
+    // debug: after injection, check bgMusic
+    const existingAfter = document.getElementById('bgMusic');
+    console.log('[loadPage] after inject bgMusic:', existingAfter ? {paused: existingAfter.paused, src: existingAfter.currentSrc||existingAfter.src} : null);
+    if(existingAfter){
+      // try to resume
+      const p = existingAfter.play();
+      if(p && p.then){
+        p.then(()=>console.log('[loadPage] resumed bgMusic successfully')).catch(err=>console.log('[loadPage] resume rejected', err));
+      }
+    }
+  }catch(e){
+    // if anything goes wrong, fallback to normal navigation
+    window.location.href = url;
+  }
+}
+
+// on back/forward, do a full reload (simpler handling)
+window.addEventListener('popstate', ()=>{ location.reload(); });
+
+function dropFrog(){
+
+  const animals = ["🐸","🦊"];
+
+  for(let i=0;i<12;i++){
+
+    const a = document.createElement("div");
+    a.className = "frogDrop";
+    a.innerHTML = animals[Math.floor(Math.random()*animals.length)];
+
+    // vị trí ngang random (full width)
+    a.style.left = (Math.random()*100) + "vw";
+
+    // random góc xoay ban đầu
+    a.style.transform = `rotate(${Math.random()*360}deg)`;
+
+    const duration = 1 + Math.random()*1.5;
+
+    // use existing frogFall keyframes via inline animation
+    a.style.animation = `frogFall ${duration}s cubic-bezier(.3,1.3,.4,1) forwards`;
+    // slight size variation
+    a.style.fontSize = (48 + Math.random()*40) + "px";
+    a.style.zIndex = 1000;
+
+    document.body.appendChild(a);
+
+  }
+
+}
+
+
+// (physics removed — using CSS-based drops)
+// end of script
+
+</script>
+
+<div class="ground"></div>
+
+</body>
+</html>
+s

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Start — Play music</title>
+  <style>
+    :root{
+  --bg:#0e0e16;
+  --card:#181826;
+  --accent:#ff2f92;
+  --text:#ffffff;
+  --muted:#a0a0b8;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;}
+
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  margin:0;
+  font-family:Montserrat,system-ui,Arial;
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* button only */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 28px;
+  border-radius:999px;
+  font-size:18px;
+  cursor:pointer;
+
+  background:#1f1f2e;   /* màu tối đơn */
+  color:#fff;
+  border:1px solid #2a2a3a;
+
+  transition:all .2s ease;
+}
+
+.btn:hover{
+  background:#26263a;
+  transform:translateY(-2px);
+}
+
+.btn:active{
+  transform:scale(.96);
+}
+
+.hint{
+  margin-top:14px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+  </style>
+</head>
+<body>
+  <div style="text-align:center">
+    <button id="goBtn" class="btn">Press me </button>
+    <div class="hint"></div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('goBtn');
+    btn.addEventListener('click', ()=>{
+      // set a URL param so map14 will attempt autoplay
+      window.location.href = 'map 14.html?autoplay=1';
+    });
+  </script>
+</body>
+</html>

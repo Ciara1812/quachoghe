@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Love Route</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --pink:#ff4da6;
+  --soft:#ff9ecf;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Montserrat;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+
+  background:
+    radial-gradient(1200px 600px at 20% 20%, #2d1b4f 0%, transparent 60%),
+    radial-gradient(1000px 600px at 80% 80%, #1a103a 0%, transparent 60%),
+    linear-gradient(135deg, #0f0c29, #1b1440 60%, #0a061a);
+}
+
+/* Floating particles */
+.particle{
+  position:fixed;
+  width:4px;
+  height:4px;
+  background:#ff9ecf;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:.6;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp{
+  to{
+    transform:translateY(-120vh);
+    opacity:0;
+  }
+}
+
+.card{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(18px);
+  border-radius:32px;
+  padding:40px;
+  width:900px;
+  max-width:95%;
+  border:1px solid rgba(255,255,255,.06);
+  text-align:center;
+  animation: glowBreath 4s ease-in-out infinite alternate;
+}
+
+@keyframes glowBreath{
+  from{ box-shadow:0 0 80px rgba(255,0,150,.2); }
+  to{ box-shadow:0 0 160px rgba(255,0,150,.45); }
+}
+
+.map{ height:420px; }
+svg{width:100%;height:100%}
+
+.mlabel{
+  fill:#fff;
+  font-weight:600;
+  font-size:14px;
+}
+
+.routeGlow{
+  stroke:#ff2ea6;
+  stroke-width:6;
+  filter:
+    drop-shadow(0 0 25px #ff2ea6)
+    drop-shadow(0 0 50px #ff1493)
+    drop-shadow(0 0 90px #ff69b4);
+}
+
+#route{
+  animation: dashMove 3s linear infinite;
+}
+@keyframes dashMove{
+  from{ stroke-dashoffset:0; }
+  to{ stroke-dashoffset:100; }
+}
+
+.heart{
+  filter: drop-shadow(0 0 8px #ff4da6);
+}
+
+.centerHeart{
+  cursor:pointer;
+  transform-origin:center;
+  transition:.4s;
+  filter:
+    drop-shadow(0 0 15px #ff2ea6)
+    drop-shadow(0 0 30px #ff1493);
+}
+
+.centerHeart:hover{
+  transform:scale(1.25);
+  filter:
+    drop-shadow(0 0 20px #ff2ea6)
+    drop-shadow(0 0 60px #ff1493)
+    drop-shadow(0 0 120px #ff69b4);
+}
+
+/* Countdown */
+.countdown{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:120px;
+  font-weight:800;
+  color:#fff;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:999;
+  text-shadow:
+    0 0 20px #ff2ea6,
+    0 0 50px #ff1493,
+    0 0 100px #ff69b4;
+}
+.countdown.show{
+  opacity:1;
+}
+/* audio play fallback button */
+#playAudioBtn{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:1200;
+  background:linear-gradient(180deg,#ff4da6,#ff2ea6);
+  color:white;
+  border:0;
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:700;
+  box-shadow:0 8px 30px rgba(255,45,120,0.18);
+  display:none;
+  cursor:pointer;
+}
+#playAudioBtn:active{transform:translateY(1px)}
+</style>
+</head>
+
+<body>
+
+    <audio id="bgMusic" autoplay loop playsinline preload="auto">
+      <source src="understand.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="playAudioBtn" aria-label="Play background music"> Play music</button>
+
+
+<div id="pageRoot">
+
+<div class="card">
+
+<div class="map">
+<svg viewBox="0 0 800 450"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<path id="route"
+      class="routeGlow"
+      d="
+      M400 270
+      C 400 180 300 150 250 230
+      C 200 320 350 380 400 410
+      C 450 380 600 320 550 230
+      C 500 150 400 180 400 270
+      "
+      fill="none"
+      stroke-dasharray="8 10"
+      stroke-linecap="round"/>
+
+<g id="hearts"></g>
+
+<circle cx="250" cy="230" r="15" fill="#fff"/>
+<text x="250" y="260" text-anchor="middle" class="mlabel">Lý</text>
+
+<circle cx="550" cy="230" r="15" fill="#fff"/>
+<text x="550" y="260" text-anchor="middle" class="mlabel">Naura</text>
+
+<path class="centerHeart"
+      onclick="goNext()"
+      d="M400 260
+         C390 235 350 235 350 270
+         C350 300 400 330 400 330
+         C400 330 450 300 450 270
+         C450 235 410 235 400 260 Z"
+      fill="#ff4da6"/>
+
+</svg>
+
+</div>
+
+</div>
+
+<div id="countdown" class="countdown"></div>
+
+<script>
+// Autoplay handling: attempt to play; if blocked, show a play button for user gesture
+const _bgMusic = document.getElementById('bgMusic');
+const _playBtn = document.getElementById('playAudioBtn');
+
+// debug: log bgMusic events
+if(_bgMusic){
+  _bgMusic.addEventListener('play', ()=>console.log('[bgMusic] event: play'));
+  _bgMusic.addEventListener('pause', ()=>console.log('[bgMusic] event: pause'));
+  _bgMusic.addEventListener('ended', ()=>console.log('[bgMusic] event: ended'));
+  _bgMusic.addEventListener('error', (e)=>console.log('[bgMusic] event: error', e));
+}
+
+function tryAutoPlayAudio(){
+  if(!_bgMusic) return;
+  const params = new URLSearchParams(window.location.search);
+  const wantAuto = params.get('autoplay') === '1';
+
+  const p = _bgMusic.play();
+  if(p !== undefined){
+    p.then(()=>{
+      if(_playBtn) _playBtn.style.display='none';
+      if(wantAuto){
+        // remove autoplay param from URL
+        params.delete('autoplay');
+        const newUrl = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '');
+        history.replaceState({}, '', newUrl);
+      }
+    }).catch(()=>{ if(_playBtn) _playBtn.style.display='block'; });
+  }
+}
+
+if(_playBtn){
+  _playBtn.addEventListener('click', ()=>{
+    if(!_bgMusic) return;
+    _bgMusic.play().then(()=>{ _playBtn.style.display='none'; }).catch(()=>{});
+  });
+}
+
+document.addEventListener('DOMContentLoaded', tryAutoPlayAudio);
+
+const heartsContainer = document.getElementById("hearts");
+const countdownEl = document.getElementById("countdown");
+let counting = false;
+
+/* Tim bay theo route */
+for(let i=0;i<27;i++){
+  let heart = document.createElementNS("http://www.w3.org/2000/svg","path");
+  heart.setAttribute("d","M0 -5 C-4 -14 -18 -14 -18 -2 C-18 8 0 16 0 16 C0 16 18 8 18 -2 C18 -14 4 -14 0 -5 Z");
+  heart.setAttribute("fill", i%2==0 ? "#ff4da6" : "#ff9ecf");
+  heart.setAttribute("class","heart");
+
+  let motion = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
+  motion.setAttribute("dur", (14 + Math.random()*6) + "s");
+  motion.setAttribute("begin", (-Math.random()*14) + "s");
+  motion.setAttribute("repeatCount","indefinite");
+  motion.setAttribute("rotate","auto");
+
+  let mpath = document.createElementNS("http://www.w3.org/2000/svg","mpath");
+  mpath.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","#route");
+
+  motion.appendChild(mpath);
+  heart.appendChild(motion);
+  heartsContainer.appendChild(heart);
+}
+
+/* Floating particles */
+for(let i=0;i<25;i++){
+  const p = document.createElement("div");
+  p.className="particle";
+  p.style.left = Math.random()*100+"vw";
+  p.style.bottom = "-10px";
+  p.style.animationDuration = 8 + Math.random()*6 + "s";
+  p.style.animationDelay = Math.random()*5 + "s";
+  document.body.appendChild(p);
+}
+
+/* Countdown 5s */
+function goNext(){
+  if(counting) return;
+  counting = true;
+
+  let timeLeft = 5;
+  countdownEl.innerText = timeLeft;
+  countdownEl.classList.add("show");
+
+  const timer = setInterval(() => {
+    timeLeft--;
+    countdownEl.innerText = timeLeft;
+
+    if(timeLeft <= 0){
+      clearInterval(timer);
+      // load index 6 content into the current page to keep audio playing
+      loadPage('index 6 copy 2.html');
+    }
+  },1000);
+
+}
+
+// Load another HTML file and replace #pageRoot content while keeping persistent audio
+async function loadPage(url){
+  try{
+    const existingBefore = document.getElementById('bgMusic');
+    console.log('[loadPage] start ->', url, 'bgMusic before:', existingBefore ? {paused: existingBefore.paused, src: existingBefore.currentSrc||existingBefore.src} : null);
+    const res = await fetch(url);
+    if(!res.ok) return window.location.href = url; // fallback to full nav
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+
+    const newBody = doc.body;
+    // remove any audio elements from the fetched content so the persistent audio stays
+    const audios = newBody.querySelectorAll('audio');
+    audios.forEach(a=>a.remove());
+
+    const pageRoot = document.getElementById('pageRoot');
+    if(pageRoot){
+      pageRoot.innerHTML = newBody.innerHTML;
+    } else {
+      document.body.innerHTML = newBody.innerHTML; // fallback
+    }
+
+    // update title
+    if(doc.title) document.title = doc.title;
+
+    // execute scripts from fetched document
+    const scripts = doc.querySelectorAll('script');
+    for(const s of scripts){
+      if(s.src){
+        await new Promise((res, rej)=>{
+          const sc = document.createElement('script');
+          sc.src = s.src;
+          sc.onload = res; sc.onerror = rej;
+          document.body.appendChild(sc);
+        }).catch(()=>{});
+      } else {
+        try{ eval(s.textContent); }catch(e){}
+      }
+    }
+
+    // ensure persistent background audio keeps playing (resume if needed)
+    try{
+      const existingBg = document.getElementById('bgMusic');
+      if(existingBg && existingBg.paused === true){
+        existingBg.play().catch(()=>{});
+      }
+    }catch(e){}
+
+    // update history so back button works
+    history.pushState({}, '', url);
+    // debug: after injection, check bgMusic
+    const existingAfter = document.getElementById('bgMusic');
+    console.log('[loadPage] after inject bgMusic:', existingAfter ? {paused: existingAfter.paused, src: existingAfter.currentSrc||existingAfter.src} : null);
+    if(existingAfter){
+      // try to resume
+      const p = existingAfter.play();
+      if(p && p.then){
+        p.then(()=>console.log('[loadPage] resumed bgMusic successfully')).catch(err=>console.log('[loadPage] resume rejected', err));
+      }
+    }
+  }catch(e){
+    // if anything goes wrong, fallback to normal navigation
+    window.location.href = url;
+  }
+}
+
+// on back/forward, do a full reload (simpler handling)
+window.addEventListener('popstate', ()=>{ location.reload(); });
+</script>
+
+</body>
+</html>
