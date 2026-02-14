@@ -303,12 +303,7 @@ body::after{
     100%{opacity:.8;}
 }
 
-/* Trái tim khóa */
-#heartBtn{
-    filter:grayscale(1) brightness(.6);
-    opacity:.6;
-    transition:all .8s ease;
-}
+
 
 /* Khi mở khóa */
 #heartBtn.unlocked{
@@ -341,6 +336,19 @@ body::after{
     pointer-events:none;
 }
 
+
+.cryText{
+    position:absolute;
+    top:30%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-family:'Cinzel', serif;
+    font-size:28px;
+    letter-spacing:4px;
+    color:#8b1e1e;
+    opacity:.85;
+    pointer-events:none;
+}
 
 </style>
 </head>
@@ -398,7 +406,8 @@ body::after{
     L
   </div>
 
-  <div id="unlockCountdown" class="unlock-timer"></div>
+  <div class="cryText">such a crybaby</div>
+
 
   
   <div class="map">
@@ -644,46 +653,7 @@ function dropFrog(){
 
 }
 
-// ===== Unlock đúng 1:45 AM =====
 
-const unlockCountdown = document.getElementById("unlockCountdown");
-const heartBtn = document.getElementById("heartBtn");
-
-// khóa tim ban đầu
-heartBtn.style.pointerEvents = "none";
-
-function updateUnlock(){
-
-    const now = new Date();
-
-    // đặt mốc 1:45 sáng hôm nay
-    let target = new Date();
-    target.setHours(1,45,0,0);
-
-    // nếu đã qua 1:45 hôm nay → chuyển sang ngày mai
-    if(now >= target){
-        target.setDate(target.getDate() + 1);
-    }
-
-    const diff = target - now;
-
-    if(diff <= 0){
-        unlockCountdown.textContent = "00:00:00";
-
-        heartBtn.classList.add("unlocked");
-        heartBtn.style.pointerEvents = "auto";
-        return;
-    }
-
-    const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2,'0');
-    const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2,'0');
-    const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2,'0');
-
-    unlockCountdown.textContent = `${hours}:${minutes}:${seconds}`;
-}
-
-setInterval(updateUnlock, 1000);
-updateUnlock();
 
 </script>
 
